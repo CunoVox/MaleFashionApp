@@ -84,7 +84,7 @@ public class CheckOutActivity extends AppCompatActivity {
     private void btnPlaceOrderClick() {
         btnPlaceOrder.setOnClickListener(v -> {
             if (rbPayOnDelivery.isChecked()) {
-                newOrder();
+                newOrder("Pay on Delivery");
             } else if (rbPayWithZaloPay.isChecked()) {
                 StrictMode.ThreadPolicy policy = new
                         StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -106,7 +106,7 @@ public class CheckOutActivity extends AppCompatActivity {
                         ZaloPaySDK.getInstance().payOrder(CheckOutActivity.this, token, "demozpdk://app", new PayOrderListener() {
                             @Override
                             public void onPaymentSucceeded(String s, String s1, String s2) {
-                                newOrder();
+                                newOrder("Pay with ZaloPay");
                             }
 
                             @Override
@@ -149,14 +149,14 @@ public class CheckOutActivity extends AppCompatActivity {
 
     }
 
-    private void newOrder() {
+    private void newOrder(String method) {
         Address address = ObjectSharedPreferences.getSavedObjectFromPreference(CheckOutActivity.this, "address", "MODE_PRIVATE", Address.class);
         if (address == null) {
             Toast.makeText(CheckOutActivity.this.getApplicationContext(), "Please add your address before place order", Toast.LENGTH_SHORT).show();
         } else {
             User user = ObjectSharedPreferences.getSavedObjectFromPreference(CheckOutActivity.this, "User", "MODE_PRIVATE", User.class);
             OrderAPI.orderAPI.placeOrder(user.getId(), tvUserName.getText().toString(),
-                    tvPhoneNumber.getText().toString().replace("(", "").replace(")", ""), tvAddress.getText().toString()).enqueue(new Callback<Order>() {
+                    tvPhoneNumber.getText().toString().replace("(", "").replace(")", ""), tvAddress.getText().toString(), method).enqueue(new Callback<Order>() {
                 @Override
                 public void onResponse(Call<Order> call, Response<Order> response) {
                     Order order = response.body();

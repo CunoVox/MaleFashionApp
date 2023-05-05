@@ -18,7 +18,7 @@ public interface OrderAPI {
     @FormUrlEncoded
     @POST("/placeorder")
     Call<Order> placeOrder(@Field("user_id") String user_id, @Field("fullname") String fullname,
-                           @Field("phoneNumber") String phoneNumber, @Field("address") String address);
+                           @Field("phoneNumber") String phoneNumber, @Field("address") String address, @Field("paymentMethod") String paymentMethod);
 
     @GET("/order")
     Call<List<Order>> getOrderByUserId(@Query("user_id") String user_id);

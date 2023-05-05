@@ -1,107 +1,62 @@
 package com.example.fashionstoreapp.Activity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.fashionstoreapp.Adapter.OrderAdapter;
-import com.example.fashionstoreapp.Model.Order;
-import com.example.fashionstoreapp.Model.User;
+import com.example.fashionstoreapp.Adapter.OrderFragmentAdapter;
 import com.example.fashionstoreapp.R;
-import com.example.fashionstoreapp.Retrofit.OrderAPI;
-import com.example.fashionstoreapp.Somethings.ObjectSharedPreferences;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.google.android.material.tabs.TabLayout;
 
 public class OrderActivity extends AppCompatActivity {
 
-    RecyclerView.Adapter orderAdapter;
-    RecyclerView recyclerViewOrder;
-    ImageView ivHome, ivUser, ivCart, ivHistory;
+    TabLayout tabLayout;
+    ViewPager2 viewPager2;
 
-    ConstraintLayout clEmptyOrder;
-
+    OrderFragmentAdapter orderFragmentAdapter;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
         AnhXa();
-        LoadOrder();
-        appBarClick();
-    }
 
-    private void LoadOrder() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
-        recyclerViewOrder = findViewById(R.id.rvOrder);
-        recyclerViewOrder.setLayoutManager(linearLayoutManager);
-        User user = ObjectSharedPreferences.getSavedObjectFromPreference(OrderActivity.this, "User", "MODE_PRIVATE", User.class);
-        OrderAPI.orderAPI.getOrderByUserId(user.getId()).enqueue(new Callback<List<Order>>() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        orderFragmentAdapter = new OrderFragmentAdapter(fragmentManager, getLifecycle());
+        viewPager2.setAdapter(orderFragmentAdapter);
+
+        tabLayout.addTab(tabLayout.newTab().setText("All Order"));
+        tabLayout.addTab(tabLayout.newTab().setText("Pay On Delivery"));
+        tabLayout.addTab(tabLayout.newTab().setText("Pay With ZaloPay"));
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
-                List<Order> listOrder = response.body();
-                if (listOrder.isEmpty()){
-                    clEmptyOrder.setVisibility(View.VISIBLE);
-                }
-//                Log.e("++==", String.valueOf(listOrder));
-//                Log.e("====", listOrder.get(0).getOrder_Item().toString());
-                orderAdapter = new OrderAdapter(listOrder, OrderActivity.this);
-                recyclerViewOrder.setAdapter(orderAdapter);
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager2.setCurrentItem(tab.getPosition());
             }
             @Override
-            public void onFailure(Call<List<Order>> call, Throwable t) {
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
 
             }
         });
 
-    }
-
-    private void appBarClick() {
-        ivHome.setOnClickListener(new View.OnClickListener() {
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(OrderActivity.this, MainActivity.class));
-                finish();
-            }
-        });
-        ivUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(OrderActivity.this, UserActivity.class));
-                finish();
-            }
-        });
-        ivCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(OrderActivity.this, CartActivity.class));
-                finish();
-            }
-        });
-
-        ivHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(OrderActivity.this, OrderActivity.class));
-                finish();
+            public void onPageSelected(int position) {
+                tabLayout.selectTab(tabLayout.getTabAt(position));
             }
         });
     }
 
     private void AnhXa() {
-        ivHome = findViewById(R.id.ivHome);
-        ivUser = findViewById(R.id.ivUser);
-        ivCart = findViewById(R.id.ivCart);
-        ivHistory = findViewById(R.id.ivHistory);
-        clEmptyOrder = findViewById(R.id.clEmptyOrder);
+        tabLayout = findViewById(R.id.tabLayout);
+        viewPager2 = findViewById(R.id.viewPager2);
     }
 }

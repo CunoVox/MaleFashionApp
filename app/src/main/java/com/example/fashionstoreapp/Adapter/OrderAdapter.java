@@ -12,7 +12,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.fashionstoreapp.Activity.OrderActivity;
 import com.example.fashionstoreapp.Model.Order;
 import com.example.fashionstoreapp.R;
 
