@@ -1,6 +1,8 @@
 package com.example.fashionstoreapp.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,14 +17,14 @@ public class OrderActivity extends AppCompatActivity {
 
     TabLayout tabLayout;
     ViewPager2 viewPager2;
-
     OrderFragmentAdapter orderFragmentAdapter;
+    ImageView ivHome, ivUser, ivCart, ivHistory;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
         AnhXa();
-
+        appBarClick();
         FragmentManager fragmentManager = getSupportFragmentManager();
         orderFragmentAdapter = new OrderFragmentAdapter(fragmentManager, getLifecycle());
         viewPager2.setAdapter(orderFragmentAdapter);
@@ -55,7 +57,32 @@ public class OrderActivity extends AppCompatActivity {
         });
     }
 
+    private void appBarClick() {
+        ivHome.setOnClickListener(v -> {
+            startActivity(new Intent(OrderActivity.this, MainActivity.class));
+            finish();
+        });
+        ivUser.setOnClickListener(v -> {
+            startActivity(new Intent(OrderActivity.this, UserActivity.class));
+            finish();
+        });
+        ivCart.setOnClickListener(v -> {
+            startActivity(new Intent(OrderActivity.this, CartActivity.class));
+            finish();
+        });
+
+        ivHistory.setOnClickListener(v -> {
+            startActivity(new Intent(OrderActivity.this, OrderActivity.class));
+            finish();
+        });
+    }
+
     private void AnhXa() {
+        ivHome = findViewById(R.id.ivHome);
+        ivUser = findViewById(R.id.ivUser);
+        ivCart = findViewById(R.id.ivCart);
+        ivHistory = findViewById(R.id.ivHistory);
+
         tabLayout = findViewById(R.id.tabLayout);
         viewPager2 = findViewById(R.id.viewPager2);
     }

@@ -22,4 +22,7 @@ public interface OrderAPI {
 
     @GET("/order")
     Call<List<Order>> getOrderByUserId(@Query("user_id") String user_id);
+
+    @GET("/ordermethod")
+    Call<List<Order>> getOrderByUserIdAndPaymentMethod(@Query("user_id") String user_id, @Query("method") String method);
 }

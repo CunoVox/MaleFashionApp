@@ -47,7 +47,7 @@ public class SettingActivity extends AppCompatActivity {
         ivHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SettingActivity.this, HistoryActivity.class));
+                startActivity(new Intent(SettingActivity.this, OrderActivity.class));
                 finish();
             }
         });
