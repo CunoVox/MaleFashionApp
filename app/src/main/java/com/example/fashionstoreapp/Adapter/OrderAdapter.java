@@ -54,27 +54,29 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder>{
         holder.tvQuantity.setText(order.getOrder_Item().size()+"");
 
         holder.itemView.setOnClickListener(v -> {
-            holder.orderLayout.setBackground(null);
-            holder.orderLayout1.setBackground(context.getDrawable(R.drawable.order_item_background));
-            holder.orderLayout2.setVisibility(View.VISIBLE);
-            holder.ivHide.setVisibility(View.VISIBLE);
-            holder.ivShowMore.setVisibility(View.GONE);
-            if (order.getOrder_Item().size()>1)
-                holder.tvTotalItem.setText(order.getOrder_Item().size()+" Items");
-            else
-                holder.tvTotalItem.setText(order.getOrder_Item().size()+" Item");
-            holder.tvFullName.setText(order.getFullname());
-            holder.tvPhoneNumber.setText(order.getPhone());
-            holder.tvAddress.setText(order.getAddress());
-            holder.orderLayout2.requestFocus();
-        });
+            if(holder.orderLayout2.getVisibility() == View.VISIBLE){
+                holder.orderLayout.setBackground(context.getDrawable(R.drawable.order_item_background));
+                holder.orderLayout1.setBackground(null);
+                holder.orderLayout2.setVisibility(View.GONE);
+                holder.ivHide.setVisibility(View.GONE);
+                holder.ivShowMore.setVisibility(View.VISIBLE);
+            }
+            else{
+                holder.orderLayout.setBackground(null);
+                holder.orderLayout1.setBackground(context.getDrawable(R.drawable.order_item_background));
+                holder.orderLayout2.setVisibility(View.VISIBLE);
+                holder.ivHide.setVisibility(View.VISIBLE);
+                holder.ivShowMore.setVisibility(View.GONE);
+                if (order.getOrder_Item().size()>1)
+                    holder.tvTotalItem.setText(order.getOrder_Item().size()+" Items");
+                else
+                    holder.tvTotalItem.setText(order.getOrder_Item().size()+" Item");
+                holder.tvFullName.setText(order.getFullname());
+                holder.tvPhoneNumber.setText(order.getPhone());
+                holder.tvAddress.setText(order.getAddress());
+                holder.orderLayout2.requestFocus();
+            }
 
-        holder.ivHide.setOnClickListener(v -> {
-            holder.orderLayout.setBackground(context.getDrawable(R.drawable.order_item_background));
-            holder.orderLayout1.setBackground(null);
-            holder.orderLayout2.setVisibility(View.GONE);
-            holder.ivHide.setVisibility(View.GONE);
-            holder.ivShowMore.setVisibility(View.VISIBLE);
         });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);

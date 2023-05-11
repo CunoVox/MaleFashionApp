@@ -155,8 +155,7 @@ public class CheckOutActivity extends AppCompatActivity {
             Toast.makeText(CheckOutActivity.this.getApplicationContext(), "Please add your address before place order", Toast.LENGTH_SHORT).show();
         } else {
             User user = ObjectSharedPreferences.getSavedObjectFromPreference(CheckOutActivity.this, "User", "MODE_PRIVATE", User.class);
-            OrderAPI.orderAPI.placeOrder(user.getId(), tvUserName.getText().toString(),
-                    tvPhoneNumber.getText().toString().replace("(", "").replace(")", ""), tvAddress.getText().toString(), method).enqueue(new Callback<Order>() {
+            OrderAPI.orderAPI.placeOrder(user.getId(), tvUserName.getText().toString(), tvPhoneNumber.getText().toString().replace("(", "").replace(")", ""), tvAddress.getText().toString(), method).enqueue(new Callback<Order>() {
                 @Override
                 public void onResponse(Call<Order> call, Response<Order> response) {
                     Order order = response.body();
@@ -165,6 +164,8 @@ public class CheckOutActivity extends AppCompatActivity {
                         placeOrderSuccess.setVisibility(View.VISIBLE);
                         Button btnContinueShopping = findViewById(R.id.btnContinueShopping);
                         btnContinueShopping.setOnClickListener(v1 -> {
+                            placeOrder.setVisibility(View.VISIBLE);
+                            placeOrderSuccess.setVisibility(View.GONE);
                             startActivity(new Intent(CheckOutActivity.this, MainActivity.class));
                         });
                     }

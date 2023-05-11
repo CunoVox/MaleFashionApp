@@ -77,7 +77,6 @@ public class OrderActivity extends AppCompatActivity {
         OrderAPI.orderAPI.getOrderByUserId(user.getId()).enqueue(new Callback<List<Order>>() {
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
-                Log.e("akmsd", response.body().toString());
                 if(response.body().isEmpty()){
                     clOrder.setVisibility(View.GONE);
                     clEmptyOrder.setVisibility(View.VISIBLE);
