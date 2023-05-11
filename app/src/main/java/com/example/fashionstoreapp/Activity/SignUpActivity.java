@@ -102,10 +102,9 @@ public class SignUpActivity extends AppCompatActivity {
                         public void onResponse(Call<User> call, Response<User> response) {
                             User user = response.body();
                             Log.e("ffff", "Thành công");
-
                             Log.e("ffff", user.toString());
+                            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                         }
-
                         @Override
                         public void onFailure(Call<User> call, Throwable t) {
                             Log.e("ffff", "Kết nối API thất bại");

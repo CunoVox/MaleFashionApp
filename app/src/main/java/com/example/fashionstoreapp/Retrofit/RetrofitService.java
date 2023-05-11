@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitService {
 
 //    private String IPAddress="172.20.10.4";
-    private String IPAddress="192.168.1.16";
+    private String IPAddress="172.16.3.100";
 //    private String IPAddress="192.168.163.1";
 //    private String IPAddress="172.16.30.253";
 

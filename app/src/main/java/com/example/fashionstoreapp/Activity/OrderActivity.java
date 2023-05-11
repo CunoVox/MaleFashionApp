@@ -2,16 +2,29 @@ package com.example.fashionstoreapp.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.fashionstoreapp.Adapter.OrderFragmentAdapter;
+import com.example.fashionstoreapp.Model.Order;
+import com.example.fashionstoreapp.Model.User;
 import com.example.fashionstoreapp.R;
+import com.example.fashionstoreapp.Retrofit.OrderAPI;
+import com.example.fashionstoreapp.Somethings.ObjectSharedPreferences;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrderActivity extends AppCompatActivity {
 
@@ -19,6 +32,8 @@ public class OrderActivity extends AppCompatActivity {
     ViewPager2 viewPager2;
     OrderFragmentAdapter orderFragmentAdapter;
     ImageView ivHome, ivUser, ivCart, ivHistory;
+
+    ConstraintLayout clOrder, clEmptyOrder;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,8 +42,8 @@ public class OrderActivity extends AppCompatActivity {
         appBarClick();
         FragmentManager fragmentManager = getSupportFragmentManager();
         orderFragmentAdapter = new OrderFragmentAdapter(fragmentManager, getLifecycle());
+        CheckEmpty();
         viewPager2.setAdapter(orderFragmentAdapter);
-
         tabLayout.addTab(tabLayout.newTab().setText("All Order"));
         tabLayout.addTab(tabLayout.newTab().setText("Pay On Delivery"));
         tabLayout.addTab(tabLayout.newTab().setText("Pay With ZaloPay"));
@@ -57,6 +72,26 @@ public class OrderActivity extends AppCompatActivity {
         });
     }
 
+    private void CheckEmpty() {
+        User user = ObjectSharedPreferences.getSavedObjectFromPreference(OrderActivity.this, "User", "MODE_PRIVATE", User.class);
+        OrderAPI.orderAPI.getOrderByUserId(user.getId()).enqueue(new Callback<List<Order>>() {
+            @Override
+            public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
+                Log.e("akmsd", response.body().toString());
+                if(response.body().isEmpty()){
+                    clOrder.setVisibility(View.GONE);
+                    clEmptyOrder.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Order>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
     private void appBarClick() {
         ivHome.setOnClickListener(v -> {
             startActivity(new Intent(OrderActivity.this, MainActivity.class));
@@ -82,8 +117,9 @@ public class OrderActivity extends AppCompatActivity {
         ivUser = findViewById(R.id.ivUser);
         ivCart = findViewById(R.id.ivCart);
         ivHistory = findViewById(R.id.ivHistory);
-
         tabLayout = findViewById(R.id.tabLayout);
         viewPager2 = findViewById(R.id.viewPager2);
+        clOrder = findViewById(R.id.clOrder);
+        clEmptyOrder = findViewById(R.id.clEmptyOrder);
     }
 }
