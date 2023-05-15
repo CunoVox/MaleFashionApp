@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText etPassword, etUserName;
     Button btnLogin;
-    TextView tvRegister, tvForgotPassword;
+    TextView tvRegister, tvForgotPassword, tvAdmin;
     User user = new User();
     ProgressBar progressBar;
     ConstraintLayout clGoogle;
@@ -61,6 +61,13 @@ public class LoginActivity extends AppCompatActivity {
             navigateToSecondActivity();
         }
         clGoogleClick();
+        tvAdminClick();
+    }
+
+    private void tvAdminClick() {
+        tvAdmin.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, AdminActivity.class));
+        });
     }
 
     private void clGoogleClick() {
@@ -205,5 +212,6 @@ public class LoginActivity extends AppCompatActivity {
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
         progressBar = findViewById(R.id.progressBar);
         clGoogle = findViewById(R.id.clGoogle);
+        tvAdmin = findViewById(R.id.tvAdmin);
     }
 }

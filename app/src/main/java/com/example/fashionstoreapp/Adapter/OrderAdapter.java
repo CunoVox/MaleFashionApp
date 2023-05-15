@@ -112,7 +112,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder>{
             tvFullName = itemView.findViewById(R.id.tvFullName);
             tvPhoneNumber =itemView.findViewById(R.id.tvPhoneNumber);
             tvAddress =itemView.findViewById(R.id.tvAddress);
-
         }
     }
 }

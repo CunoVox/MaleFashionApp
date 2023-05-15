@@ -156,4 +156,14 @@
             app:srcCompat="@drawable/icon_google" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <TextView
+        android:id="@+id/tvAdmin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:text="Are you administrator?"
+        app:layout_constraintEnd_toEndOf="@+id/clGoogle"
+        app:layout_constraintStart_toStartOf="@+id/clGoogle"
+        app:layout_constraintTop_toBottomOf="@+id/clGoogle" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
