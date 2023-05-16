@@ -49,6 +49,7 @@ public class EditProfileActivity extends AppCompatActivity {
     Button btnUpdate;
     User user;
     TextView tvChangePicture, tvError;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,11 +95,19 @@ public class EditProfileActivity extends AppCompatActivity {
                 RequestBody requestFile = RequestBody.create(file, MediaType.parse("multipart/form-data"));
                 avatar=MultipartBody.Part.createFormData("avatar", file.getName(), requestFile);
             }
+
+            progressDialog = new ProgressDialog(EditProfileActivity.this);
+            progressDialog.setMessage("Loading..."); // Setting Message
+            progressDialog.setTitle("Update Profile"); // Setting Title
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
+            progressDialog.show(); // Display Progress Dialog
+            progressDialog.setCancelable(false);
             UserAPI.userApi.update(userId,avatar, fullName, email, phoneNumber, address).enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
                     User userUpdate = response.body();
                     if(userUpdate!=null){
+                        progressDialog.dismiss();
                         ObjectSharedPreferences.saveObjectToSharedPreference(EditProfileActivity.this, "User", "MODE_PRIVATE", userUpdate);
                         startActivity(new Intent(EditProfileActivity.this, UserActivity.class));
                         finish();
@@ -107,6 +116,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<User> call, Throwable t) {
+                    progressDialog.dismiss();
                     Log.e("====", "call fail + " + t.getMessage());
                 }
             });
