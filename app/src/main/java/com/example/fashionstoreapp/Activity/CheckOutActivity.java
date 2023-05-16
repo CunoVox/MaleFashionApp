@@ -62,6 +62,7 @@ public class CheckOutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_out);
+        ZaloPaySDK.init(2553, Environment.SANDBOX);
         AnhXa();
         LoadAddress();
         LoadProductItem();
@@ -89,9 +90,8 @@ public class CheckOutActivity extends AppCompatActivity {
                 StrictMode.ThreadPolicy policy = new
                         StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
-
                 // ZaloPay SDK Init
-                ZaloPaySDK.init(2553, Environment.SANDBOX);
+//                ZaloPaySDK.init(2553, Environment.SANDBOX);
                 CreateOrder orderApi = new CreateOrder();
 
                 try {
@@ -182,13 +182,14 @@ public class CheckOutActivity extends AppCompatActivity {
     private void tvChangeAddressClick() {
         tvChangeAddress.setOnClickListener(v -> {
             startActivity(new Intent(CheckOutActivity.this, AddressActivity.class));
-
+            finish();
         });
     }
 
     private void constraintLayoutNotAddressClick() {
         constraintLayoutNotAddress.setOnClickListener(v -> {
             startActivity(new Intent(CheckOutActivity.this, AddressActivity.class));
+            finish();
         });
     }
 
@@ -231,6 +232,7 @@ public class CheckOutActivity extends AppCompatActivity {
 
     private void LoadAddress() {
         Address address = ObjectSharedPreferences.getSavedObjectFromPreference(CheckOutActivity.this, "address", "MODE_PRIVATE", Address.class);
+//        Log.e("====", address.toString());
         if (address == null) {
             constraintLayoutAddress.setVisibility(View.GONE);
             constraintLayoutNotAddress.setVisibility(View.VISIBLE);
@@ -239,7 +241,6 @@ public class CheckOutActivity extends AppCompatActivity {
             tvUserName.setText(address.getFullName());
             tvAddress.setText(address.getAddress());
         }
-
     }
 
     private void AnhXa() {
@@ -266,5 +267,4 @@ public class CheckOutActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         ZaloPaySDK.getInstance().onResult(intent);
     }
-
 }

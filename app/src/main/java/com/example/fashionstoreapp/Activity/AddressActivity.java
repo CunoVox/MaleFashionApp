@@ -50,6 +50,7 @@ public class AddressActivity extends AppCompatActivity {
             Address address = new Address(etFullName.getText().toString(), etPhoneNumber.getText().toString(), etAddress.getText().toString());
             ObjectSharedPreferences.saveObjectToSharedPreference(AddressActivity.this, "address", "MODE_PRIVATE", address);
             startActivity(new Intent(AddressActivity.this, CheckOutActivity.class));
+            finish();
         });
     }
 
@@ -63,7 +64,10 @@ public class AddressActivity extends AppCompatActivity {
     }
 
     private void ivBackClick() {
-        ivBack.setOnClickListener(v -> onBackPressed());
+        ivBack.setOnClickListener(v -> {
+            startActivity(new Intent(AddressActivity.this, CheckOutActivity.class));
+        });
+
     }
 
     private void AnhXa() {
