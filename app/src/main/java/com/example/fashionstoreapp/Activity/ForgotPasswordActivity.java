@@ -1,6 +1,7 @@
 package com.example.fashionstoreapp.Activity;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -57,11 +58,18 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 etUserName.requestFocus();
                 return;
             }
+            ProgressDialog progressDialog = new ProgressDialog(ForgotPasswordActivity.this);
+            progressDialog.setMessage("Checking..."); // Setting Message
+            progressDialog.setTitle("Forgot Password"); // Setting Title
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
+            progressDialog.show(); // Display Progress Dialog
+            progressDialog.setCancelable(false);
             UserAPI.userApi.forgotPassword(user_id).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     String codeForgot = response.body();
 //                    Log.e("===", codeForgot);
+                    progressDialog.dismiss();
                     if(response.isSuccessful()){
                         Log.e("===", codeForgot);
                         clForgotPassword.setVisibility(View.GONE);
@@ -136,6 +144,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
                     Log.e("===++", t.getMessage());
+                    progressDialog.dismiss();
                 }
             });
         });
